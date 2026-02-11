@@ -1,0 +1,100 @@
+/*
+  Специально для тёмной темы при наличии класса,
+  здесь окажутся стили, которые нужно переопределить принудительно,
+  переключая тему
+*/
+
+:root.theme-dark {
+  /* сохраните этот селектор в приведённом виде.
+    Так стили написанные ниже будут иметь больший вес,
+    чем стили в медиазапросе предпочтений пользователя
+  */
+  --dark-purpure: #c62969;
+  /* --dark-purpure: #db00ff; */
+  --dark-base-black: #000028;
+  --dark-accent-color: rgb(255 0 112);
+  --dark-pink: #ff8dcb;
+  --dark-pink-text: #f1b2ce;
+  --page-bg-color: #000028;
+  --decoration-color: rgb(255 0 112);
+  --border-color-opacity: #ff007066;
+
+  --bg-image: url(../images/cover-image-dark.png);
+  --button-color: var(--dark-accent-color);
+  --content__section-title-color: var(--dark-accent-color);
+}
+
+@media (prefers-color-scheme: dark) {
+  /* Более насыщенный шрифт при темной теме */
+  /* body {
+        font-variation-settings: 'wght' 700;
+  } */
+  :root {
+    --dark-purpure: #c62969;
+    /* --dark-purpure: #db00ff; */
+    --dark-base-black: #000028;
+    --dark-accent-color: rgb(255 0 112);
+    --dark-pink: #ff8dcb;
+    --dark-pink-text: #f1b2ce;
+    --page-bg-color: #000028;
+    --decoration-color: rgb(255 0 112);
+    --border-color-opacity: #ff007066;
+
+    --bg-image: url(../images/cover-image-dark.png);
+    --button-color: var(--dark-accent-color);
+    --content__section-title-color: var(--dark-accent-color);
+  }
+
+  /* .theme-dark .fa-telegram:before {
+    background: radial-gradient(circle, #fff 50%, transparent 50%);
+  } */
+
+  .header__socials-telegram {
+    color: #0088cc;
+  }
+  .header__socials-github {
+    color: var(--dark-pink-text);
+  }
+  .header__socials-whatsapp {
+    color: rgb(37, 211, 102);
+  }
+
+  .header__decorated-rec {
+    display: flex;
+  }
+
+  .header__decorated-rec::before {
+    display: flex;
+  }
+
+  .header__decorated-rec::after {
+    display: flex;
+  }
+}
+
+/* .theme-dark .fa-telegram:before {
+  background: radial-gradient(circle, #fff 50%, transparent 50%);
+} */
+
+
+.theme-dark .header__socials-telegram {
+  color: #0088cc;
+}
+.theme-dark .header__socials-github {
+  color: var(--dark-accent-color);
+}
+.theme-dark .header__socials-whatsapp {
+  color: rgb(37, 211, 102);
+}
+
+.theme-dark .header__decorated-rec {
+  display: flex;
+}
+
+.theme-dark .header__decorated-rec::before {
+  display: flex;
+}
+
+.theme-dark .header__decorated-rec::after {
+  display: flex;
+}

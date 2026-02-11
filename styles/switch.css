@@ -1,0 +1,135 @@
+.checkboxGroup {
+  display: inline-block;
+  vertical-align: middle;
+  width: 150px;
+  border: none;
+}
+/*------- Horizontal power swtich ---------*/
+.checkboxControl {
+  border: 2px solid #102838;
+  border-radius: 7px;
+  display: inline-block;
+  width: 100px;
+  height: 50px;
+  padding-top: 1px;
+  position: relative;
+  vertical-align: middle;
+  margin: 0 60px 10px 0;
+  color: #297597;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.4),
+    0 2px 1px -1px rgba(255, 255, 255, 0.7) inset, 8px 0 5px -5px #02425c inset,
+    -8px 0 5px -5px #02425c inset;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  background: #80dce9;
+}
+.checkboxControl input {
+  position: absolute;
+  visibility: hidden;
+}
+.checkboxControl > div {
+  background: -webkit-linear-gradient(
+    left,
+    #8fd9e4 0%,
+    #a0f2fe 53%,
+    #69dcf1 56%,
+    #33afce 99%,
+    #cef5ff 100%
+  );
+  background: linear-gradient(
+    to right,
+    #8fd9e4 0%,
+    #a0f2fe 53%,
+    #69dcf1 56%,
+    #33afce 99%,
+    #cef5ff 100%
+  );
+  box-shadow: -2px 0 1px 0 #a6f2fe inset;
+  border-radius: 5px;
+  line-height: 50px;
+  font-weight: bold;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+
+  transform-origin: 0 0;
+  -webkit-transform-origin: 0 0;
+  transform: scaleX(0.93);
+  -webkit-transform: scaleX(0.93);
+  transition: 0.1s;
+  -webkit-transition: 0.1s;
+}
+.checkboxControl div:first-letter {
+  letter-spacing: 55px;
+}
+
+.checkboxControl :checked ~ div {
+  transform-origin: 100% 0;
+  -webkit-transform-origin: 100% 0;
+  box-shadow: 2px 0 1px 0 #a6f2fe inset;
+  background: -webkit-linear-gradient(
+    left,
+    #cef5ff 0%,
+    #33afce 1%,
+    #69dcf1 47%,
+    #a0f2fe 50%,
+    #8fd9e4 100%
+  );
+  background: linear-gradient(
+    to right,
+    #cef5ff 0%,
+    #33afce 1%,
+    #69dcf1 47%,
+    #a0f2fe 50%,
+    #8fd9e4 100%
+  );
+}
+/* bottom shadow of 'upper' side of the button */
+.checkboxControl > b {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  border-radius: 8px;
+  -webkit-transform: skewY(5deg);
+  transform: skewY(5deg);
+  box-shadow: 0 6px 8px -5px #000;
+}
+.checkboxControl :checked ~ b {
+  right: auto;
+  left: 0;
+  -webkit-transform: skewY(-5deg);
+  transform: skewY(-5deg);
+}
+/* the light indicator to the right of the button */
+.checkboxControl .indicator {
+  position: absolute;
+  top: 14px;
+  right: -20px;
+  width: 8px;
+  height: 25px;
+  box-shadow: 0 0 8px #000 inset;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  transition: 0.2s;
+  -webkit-transition: 0.2s;
+}
+.checkboxControl .indicator:before {
+  content: "";
+  display: inline-block;
+  margin-top: 8px;
+  width: 2px;
+  height: 8px;
+  border-radius: 10px;
+  transition: 0.5s;
+  -webkit-transition: 0.5s;
+}
+.checkboxControl :checked ~ .indicator:before {
+  box-shadow: 0 0 7px 6px #bafc58;
+  width: 6px;
+  background: #f0f9e3;
+  transition: 0.1s;
+  -webkit-transition: 0.1s;
+}

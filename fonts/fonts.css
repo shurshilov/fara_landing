@@ -1,0 +1,27 @@
+@font-face {
+  font-family: 'IBM Plex mono';
+  src: url(./IBMPlexMono-Regular.woff) format('woff');
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex mono';
+  src: url(./IBMPlexMono-Bold.woff) format('woff');
+  font-weight: bold;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Kaspersky sans mono';
+  src: url(./Kaspersky_Sans_Mono_Regular.woff) format('woff');
+  font-weight: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Kaspersky sans mono';
+  src: url(./Kaspersky_Sans_Mono_Bold.woff) format('woff');
+  font-weight: bold;
+  font-display: swap;
+}
+

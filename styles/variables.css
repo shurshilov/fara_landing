@@ -1,0 +1,47 @@
+/* ===== CSS Variables & Theme Definitions ===== */
+
+:root {
+  --font-mono: 'Kaspersky sans mono', 'IBM Plex mono', monospace;
+  --ease: cubic-bezier(.16, 1, .3, 1);
+  --spring: cubic-bezier(.34, 1.56, .64, 1);
+  --logo: #009982;
+  --logo-glow: rgba(0, 153, 130, .25);
+}
+
+/* ========= DARK THEME: warm amber/volcanic ========= */
+[data-theme="dark"] {
+  --bg: #0f0a1a;
+  --bg2: #160f24;
+  --bg-card: rgba(255, 180, 60, .04);
+  --bg-card-h: rgba(255, 180, 60, .08);
+  --bg-nav: rgba(15, 10, 26, .88);
+  --tx: #ede6d6;
+  --tx2: #b8a88e;
+  --tx3: #7a6b55;
+  --ac: #e8872e;
+  --ac-glow: rgba(232, 135, 46, .25);
+  --ac2: #c26a1a;
+  --ac-soft: #f0a55a;
+  --bd: rgba(232, 135, 46, .12);
+  --bd2: rgba(232, 135, 46, .35);
+  --sh: 0 4px 30px rgba(0, 0, 0, .5);
+}
+
+/* ========= LIGHT THEME: cool blue/cyan ========= */
+[data-theme="light"] {
+  --bg: #e8f4fa;
+  --bg2: #d6ecf5;
+  --bg-card: rgba(0, 80, 140, .04);
+  --bg-card-h: rgba(0, 80, 140, .08);
+  --bg-nav: rgba(232, 244, 250, .9);
+  --tx: #0a1e2e;
+  --tx2: #2d5068;
+  --tx3: #6a8da6;
+  --ac: #0077b6;
+  --ac-glow: rgba(0, 119, 182, .15);
+  --ac2: #005a8c;
+  --ac-soft: #3498c8;
+  --bd: rgba(0, 80, 140, .1);
+  --bd2: rgba(0, 119, 182, .3);
+  --sh: 0 4px 30px rgba(0, 40, 80, .08);
+}

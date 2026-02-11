@@ -1,0 +1,99 @@
+/*
+  Специально для светлой темы при наличии класса.
+  Здесь окажутся стили, которые нужно переопределить принудительно,
+  переключая тему
+*/
+
+:root.theme-light {
+  /* сохраните этот селектор в приведённом виде.
+    Так стили написанные ниже будут иметь больший вес,
+    чем стили в медиазапросе предпочтений пользователя
+  */
+
+  --dark-purpure: rgb(208, 242, 190);
+  --dark-base-black: #353430;
+  --dark-accent-color: #9bb7a0;
+  --dark-pink: #353430;
+  --dark-pink-text: #353430;
+  --page-bg-color: rgb(226, 240, 219);
+  --decoration-color: #353430;
+  --border-color-opacity: #32312d66;
+  /* --dark-purpure: #ffc2e6;
+  --dark-base-black: #353430;
+  --dark-accent-color: #ff8dcb;
+  --dark-pink: #353430;
+  --dark-pink-text: #353430;
+  --page-bg-color: #fff1f7;
+  --decoration-color: #353430;
+  --border-color-opacity: #32312d66; */
+
+  /* --bg-image: url(../images/cover-image-light.png); */
+  --bg-image: var(--dark-purpure);
+  --button-color: var(--dark-pink-text);
+  --content__section-title-color: var(--dark-pink-text);
+}
+
+@media (prefers-color-scheme: light) {
+  /* Стандартный вес шрифта при светлой теме */
+  /* body {
+        font-variation-settings: 'wght' 400;
+  } */
+  :root {
+  --dark-purpure: rgb(208, 242, 190);
+  --dark-base-black: #353430;
+  --dark-accent-color: #9bb7a0;
+  --dark-pink: #353430;
+  --dark-pink-text: #353430;
+  --page-bg-color: rgb(226, 240, 219);
+  --decoration-color: #353430;
+  --border-color-opacity: #32312d66;
+
+    /* --bg-image: url(../images/cover-image-light.png); */
+    --bg-image: var(--dark-purpure);
+    --button-color: var(--dark-pink-text);
+    --content__section-title-color: var(--dark-pink-text);
+  }
+
+    .header__socials-telegram {
+    color: #0088cc;
+  }
+  .header__socials-github {
+    color: #000;
+  }
+  .header__socials-whatsapp {
+    color: rgb(37, 211, 102);
+  }
+
+  .header__decorated-rec {
+    display: none;
+  }
+
+  .header__decorated-rec::before {
+    display: none;
+  }
+
+  .header__decorated-rec::after {
+    display: none;
+  }
+}
+
+.theme-light.header__socials-telegram {
+    color: #0088cc;
+  }
+.theme-light .header__socials-github {
+    color: #000;
+  }
+.theme-light .header__socials-whatsapp {
+    color: rgb(37, 211, 102);
+  }
+.theme-light .header__decorated-rec {
+  display: none;
+}
+
+.theme-light .header__decorated-rec::before {
+  display: none;
+}
+
+.theme-light .header__decorated-rec::after {
+  display: none;
+}

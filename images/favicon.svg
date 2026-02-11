@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+    <!-- Призрачная F — самая дальняя, почти невидимая -->
+    <text x="18" y="44" font-family="Arial Black, Impact, sans-serif" font-size="46" font-weight="900" fill="#009982" opacity="0.15">F</text>
+
+    <!-- Полупрозрачная F — средняя -->
+    <text x="24" y="44" font-family="Arial Black, Impact, sans-serif" font-size="46" font-weight="900" fill="#009982" opacity="0.4">F</text>
+
+    <!-- Основная F — чёткая -->
+    <text x="30" y="44" font-family="Arial Black, Impact, sans-serif" font-size="46" font-weight="900" fill="#009982" opacity="1">F</text>
+</svg>

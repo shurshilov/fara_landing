@@ -1,23 +1,47 @@
 services:
+
+  # ─── Reverse Proxy ─────────────────────────────────────
+  nginx-proxy:
+    image: nginx:alpine
+    container_name: fara-proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./certbot/conf:/etc/letsencrypt:ro
+      - ./certbot/www:/var/www/certbot:ro
+    networks:
+      - proxy
+      - crm
+
+  # ─── Certbot (SSL) ─────────────────────────────────────
+  certbot:
+    image: certbot/certbot
+    container_name: fara-certbot
+    restart: unless-stopped
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+  # ─── Landing (faracrm.com) ─────────────────────────────
   landing:
     build: .
     container_name: fara-landing
     restart: unless-stopped
-    ports:
-      - "80:80"
-    # When ready for SSL, uncomment below and use nginx-ssl.conf instead:
-    # ports:
-    #   - "80:80"
-    #   - "443:443"
-    # volumes:
-    #   - ./certbot/conf:/etc/letsencrypt:ro
-    #   - ./certbot/www:/var/www/certbot:ro
+    expose:
+      - "80"
+    networks:
+      - proxy
 
-  # Uncomment when ready for SSL:
-  # certbot:
-  #   image: certbot/certbot
-  #   container_name: fara-certbot
-  #   volumes:
-  #     - ./certbot/conf:/etc/letsencrypt
-  #     - ./certbot/www:/var/www/certbot
-  #   entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+networks:
+  proxy:
+    driver: bridge
+  crm:
+    # Подключаемся к сети основного проекта
+    # Имя сети = <имя_папки_проекта>_default
+    # Узнать: docker network ls | grep default
+    external: true
+    name: faracrm_new_default

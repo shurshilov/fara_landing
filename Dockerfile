@@ -15,11 +15,10 @@ COPY images/ ./images/
 # Create dist
 RUN mkdir -p dist/styles dist/fonts dist/images
 
-# Minify HTML (preserves pre/code whitespace)
+# Minify HTML
 RUN html-minifier-terser \
     --collapse-whitespace \
     --remove-comments \
-    --conserve-memory \
     --minify-css true \
     --minify-js true \
     -o dist/index.html \

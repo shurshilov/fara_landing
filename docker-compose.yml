@@ -44,4 +44,4 @@ networks:
     # Имя сети = <имя_папки_проекта>_default
     # Узнать: docker network ls | grep default
     external: true
-    name: faracrm_new_default
+    name: faracrm_default

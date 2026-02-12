@@ -1,0 +1,17 @@
+sudo apt install git
+sudo apt update
+sudo apt upgrade
+sudo apt install docker.io docker-compose
+sudo apt install docker-compose-v2
+
+
+#вроде не отработала
+sudo apt install ca-certificates curl gnupg
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+
+Маленький нюанс: Если вы планируете запускать Docker от имени обычного пользователя (без sudo), не забудьте добавить себя в группу:
+bash
+sudo usermod -aG docker $USER

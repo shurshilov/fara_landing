@@ -1,0 +1,8 @@
+.git
+.gitignore
+*.md
+deploy.sh
+docker-compose.yml
+certbot/
+nginx-ssl.conf
+*.zip

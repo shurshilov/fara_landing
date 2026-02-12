@@ -7,12 +7,36 @@
 set -e
 
 DOMAIN="faracrm.com"
-EMAIL="shurshilov.a@yandex.ru"  # ← Замени на свой email
+EMAIL="shurshilov.a@yandex.ru"
 
 echo "=== 1. Создаём папки ==="
 mkdir -p certbot/conf certbot/www nginx/conf.d
 
-echo "=== 2. Временный nginx (только HTTP для ACME) ==="
+echo "=== 2. Проверяем DNS ==="
+DNS_FAIL=0
+for sub in "" "www." "demo." "docs."; do
+    host="${sub}${DOMAIN}"
+    echo -n "  $host → "
+    ip=$(dig +short "$host" A 2>/dev/null | head -1)
+    if [ -z "$ip" ]; then
+        echo "❌ НЕ НАЙДЕН! Добавь A-запись в DNS."
+        DNS_FAIL=1
+    else
+        echo "✅ $ip"
+    fi
+done
+
+if [ "$DNS_FAIL" = "1" ]; then
+    echo ""
+    echo "⚠️  Некоторые DNS-записи не настроены."
+    read -p "Продолжить всё равно? (y/N): " confirm
+    if [ "$confirm" != "y" ] && [ "$confirm" != "Y" ]; then
+        echo "Отменено. Настрой DNS и запусти снова."
+        exit 1
+    fi
+fi
+
+echo "=== 3. Временный nginx (только HTTP для ACME) ==="
 
 # Сохраняем SSL-конфиги
 for f in nginx/conf.d/*.conf; do
@@ -42,8 +66,8 @@ rm -f nginx/conf.d/01-landing.conf nginx/conf.d/02-demo.conf nginx/conf.d/03-doc
 docker compose up -d nginx-proxy
 sleep 3
 
-echo "=== 3. Запрашиваем сертификат ==="
-docker compose run --rm certbot certonly \
+echo "=== 4. Запрашиваем сертификат ==="
+docker compose run --rm --entrypoint "" certbot certbot certonly \
     --webroot \
     --webroot-path=/var/www/certbot \
     --email "$EMAIL" \
@@ -54,13 +78,13 @@ docker compose run --rm certbot certonly \
     -d "demo.$DOMAIN" \
     -d "docs.$DOMAIN"
 
-echo "=== 4. Восстанавливаем SSL-конфиги ==="
+echo "=== 5. Восстанавливаем SSL-конфиги ==="
 rm -f nginx/conf.d/00-temp.conf
 for f in nginx/conf.d/*.conf.bak; do
     [ -f "$f" ] && mv "$f" "${f%.bak}"
 done
 
-echo "=== 5. Перезапускаем всё ==="
+echo "=== 6. Перезапускаем всё ==="
 docker compose down
 docker compose up -d
 

@@ -845,6 +845,16 @@
   color: var(--tx2);
   overflow-x: auto;
   white-space: pre;
+  margin: 0;
+}
+
+.acols__code code {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  background: none;
+  padding: 0;
+  white-space: pre;
 }
 
 .acols__code .kw { color: var(--logo); }

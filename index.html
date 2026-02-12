@@ -99,7 +99,7 @@
           <p>No black boxes — all code is open and documented. FastAPI under the hood ensures speed and auto-generated API docs.</p>
         </div>
         <div>
-          <div class="acols__code"><span class="cmt"># Интуитивная Entry Point — main.py</span>
+          <pre class="acols__code"><code><span class="cmt"># Интуитивная Entry Point — main.py</span>
 <span class="kw">from</span> backend.project_setup <span class="kw">import</span> env
 
 <span class="kw">@</span>asynccontextmanager
@@ -113,7 +113,7 @@
     <span class="kw">await</span> env.start_post_init(app)
     <span class="kw">yield</span>
     <span class="cmt"># shutdown</span>
-    <span class="kw">await</span> env.stop_services(app)</div>
+    <span class="kw">await</span> env.stop_services(app)</code></pre>
         </div>
       </div>
     </section>
@@ -171,8 +171,8 @@
     <section class="sec sec--c reveal" id="gallery">
       <span class="sec__label" data-ru>Интерфейс</span><span class="sec__label" data-en>Interface</span>
       <h2 class="sec__title" data-ru>Как выглядит FARA CRM</h2><h2 class="sec__title" data-en>How FARA CRM Looks</h2>
-      <p class="sec__desc" data-ru>Реальные скриншоты системы — чат, пользователи, безопасность, вложения.</p>
-      <p class="sec__desc" data-en>Real system screenshots — chat, users, security, attachments.</p>
+      <p class="sec__desc" data-ru>Реальные скриншоты системы — кликните на категорию для просмотра.</p>
+      <p class="sec__desc" data-en>Real system screenshots — click a category to browse.</p>
 
       <div class="gal-tabs">
         <button class="gal-tab active" onclick="filterGal('all',this)" data-ru>Все</button><button class="gal-tab active" onclick="filterGal('all',this)" data-en>All</button>
@@ -222,7 +222,7 @@
           <p>Three component types: <strong style="color:var(--logo)">App</strong> (business logic + CRUD + ACL), <strong style="color:var(--logo)">Service</strong> (infrastructure: DB, logger, cron), and <strong style="color:var(--logo)">Mixin</strong> (extensions: Google Drive, Telegram, WhatsApp — plug into existing models).</p>
         </div>
         <div>
-          <div class="acols__code"><span class="cmt"># backend/project_setup.py</span>
+          <pre class="acols__code"><code><span class="cmt"># backend/project_setup.py</span>
 
 <span class="kw">class</span> <span class="str">Apps</span>(AppsCore):
     <span class="cmt"># CRM бизнес-модули</span>
@@ -247,7 +247,7 @@
     users     = UserApp()
     cron      = CronApp()
     db        = DotormDatabasesPostgresService()
-    crud_auto = DotormCrudAutoService()</div>
+    crud_auto = DotormCrudAutoService()</code></pre>
         </div>
       </div>
     </section>
@@ -259,13 +259,13 @@
       <p class="sec__desc" data-ru>Посмотрите, чем FARA CRM отличается от проприетарных CRM-систем.</p>
       <p class="sec__desc" data-en>See how FARA CRM differs from proprietary CRM systems.</p>
       <div class="cmp">
-        <div class="cmp__row cmp__head"><div class="cmp__cell"></div><div class="cmp__cell" style="color:var(--logo)">FARA CRM</div><div class="cmp__cell" data-ru>Другие CRM</div><div class="cmp__cell" data-en style="display:none">Other CRMs</div></div>
-        <div class="cmp__row"><div class="cmp__cell" data-ru>Открытый код</div><div class="cmp__cell" data-en style="display:none">Open Source</div><div class="cmp__cell"><span class="cmp__chk">✓</span></div><div class="cmp__cell">—</div></div>
-        <div class="cmp__row"><div class="cmp__cell">Self-hosted</div><div class="cmp__cell"><span class="cmp__chk">✓</span></div><div class="cmp__cell" data-ru>частично</div><div class="cmp__cell" data-en style="display:none">partial</div></div>
-        <div class="cmp__row"><div class="cmp__cell" data-ru>Модульная архитектура</div><div class="cmp__cell" data-en style="display:none">Modular Architecture</div><div class="cmp__cell"><span class="cmp__chk">✓</span></div><div class="cmp__cell">—</div></div>
+        <div class="cmp__row cmp__head"><div class="cmp__cell"></div><div class="cmp__cell" style="color:var(--logo)">FARA CRM</div><div class="cmp__cell"><span data-ru>Другие CRM</span><span data-en>Other CRMs</span></div></div>
+        <div class="cmp__row"><div class="cmp__cell"><span data-ru>Открытый код</span><span data-en>Open Source</span></div><div class="cmp__cell"><span class="cmp__chk">✓</span></div><div class="cmp__cell">—</div></div>
+        <div class="cmp__row"><div class="cmp__cell">Self-hosted</div><div class="cmp__cell"><span class="cmp__chk">✓</span></div><div class="cmp__cell"><span data-ru>частично</span><span data-en>partial</span></div></div>
+        <div class="cmp__row"><div class="cmp__cell"><span data-ru>Модульная архитектура</span><span data-en>Modular Architecture</span></div><div class="cmp__cell"><span class="cmp__chk">✓</span></div><div class="cmp__cell">—</div></div>
         <div class="cmp__row"><div class="cmp__cell">REST API</div><div class="cmp__cell"><span class="cmp__chk">✓</span></div><div class="cmp__cell"><span class="cmp__chk">✓</span></div></div>
-        <div class="cmp__row"><div class="cmp__cell" data-ru>Бесплатная лицензия</div><div class="cmp__cell" data-en style="display:none">Free License</div><div class="cmp__cell"><span class="cmp__chk">✓</span></div><div class="cmp__cell">—</div></div>
-        <div class="cmp__row"><div class="cmp__cell" data-ru>Контроль данных</div><div class="cmp__cell" data-en style="display:none">Data Control</div><div class="cmp__cell"><span class="cmp__chk">✓</span></div><div class="cmp__cell">—</div></div>
+        <div class="cmp__row"><div class="cmp__cell"><span data-ru>Бесплатная лицензия</span><span data-en>Free License</span></div><div class="cmp__cell"><span class="cmp__chk">✓</span></div><div class="cmp__cell">—</div></div>
+        <div class="cmp__row"><div class="cmp__cell"><span data-ru>Контроль данных</span><span data-en>Data Control</span></div><div class="cmp__cell"><span class="cmp__chk">✓</span></div><div class="cmp__cell">—</div></div>
       </div>
     </section>
 

@@ -319,7 +319,16 @@
       h.setAttribute('data-theme', n);
       try { localStorage.setItem('fara-theme', n); } catch(e) {}
     }
-    try { const s = localStorage.getItem('fara-theme'); if (s) document.documentElement.setAttribute('data-theme', s); } catch(e) {}
+    // Init theme: localStorage > browser preference > default dark
+    (function() {
+      try {
+        const saved = localStorage.getItem('fara-theme');
+        if (saved) { document.documentElement.setAttribute('data-theme', saved); return; }
+      } catch(e) {}
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
 
     // Language
     function setLang(lang) {
@@ -330,7 +339,15 @@
       document.querySelector('.topnav__link--mp').setAttribute('data-soon', lang === 'ru' ? 'скоро' : 'soon');
       try { localStorage.setItem('fara-lang', lang); } catch(e) {}
     }
-    try { const l = localStorage.getItem('fara-lang'); if (l) setLang(l); } catch(e) {}
+    // Init lang: localStorage > browser locale > default ru
+    (function() {
+      try {
+        const saved = localStorage.getItem('fara-lang');
+        if (saved) { setLang(saved); return; }
+      } catch(e) {}
+      const browserLang = (navigator.language || navigator.userLanguage || 'ru').slice(0, 2).toLowerCase();
+      setLang(browserLang === 'ru' ? 'ru' : 'en');
+    })();
 
     // Scroll reveal
     const obs = new IntersectionObserver(entries => {

@@ -10,12 +10,14 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
-  min-width: 375px;
+  min-width: 320px;
   max-width: 1440px;
   margin: 0 auto;
+  overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6, p {

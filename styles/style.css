@@ -7,6 +7,7 @@
   color: var(--tx);
   background-color: var(--bg);
   transition: background-color 0.5s var(--ease), color 0.4s;
+  overflow-x: hidden;
 }
 
 /* ===== SVG MASK CLASSES (legacy + new) ===== */
@@ -467,6 +468,43 @@
   margin: 0 auto;
 }
 
+/* Show only first 8 cards, hide rest until expanded */
+.fgrid:not(.expanded) .fcard:nth-child(n+30) {
+  display: none;
+}
+
+.fgrid-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 32px auto 0;
+  padding: 12px 32px;
+  border-radius: 24px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--logo);
+  background: var(--logo-glow);
+  border: 1px solid var(--logo);
+  cursor: pointer;
+  transition: all 0.25s var(--ease);
+}
+
+.fgrid-toggle:hover {
+  background: var(--logo);
+  color: #fff;
+}
+
+.fgrid-toggle .arrow {
+  transition: transform 0.3s var(--ease);
+}
+
+.fgrid.expanded + .fgrid-toggle .arrow {
+  transform: rotate(180deg);
+}
+
 .fcard {
   padding: 32px;
   border-radius: 16px;
@@ -821,6 +859,7 @@
   max-width: 1100px;
   margin: 0 auto;
   align-items: center;
+  overflow: hidden;
 }
 
 .acols__text {
@@ -835,6 +874,7 @@
 
 .acols__code {
   width: 100%;
+  max-width: 100%;
   padding: 24px;
   border-radius: 12px;
   border: 1px solid var(--bd);
@@ -1079,6 +1119,15 @@
     line-height: 1.6;
     padding: 16px;
     max-width: calc(100vw - 32px);
+  }
+
+  .fgrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .fcard {
+    padding: 20px;
   }
 
   .cmp__cell {

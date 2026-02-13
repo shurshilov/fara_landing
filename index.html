@@ -4,6 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="FARA CRM — современная CRM-система нового поколения" />
+  <meta property="og:title" content="FARA CRM — Open Source CRM" />
+  <meta property="og:description" content="CRM нового поколения на FastAPI + React. Self-hosted, модульная архитектура, 24+ модулей." />
+  <meta property="og:url" content="https://faracrm.com" />
+  <meta property="og:type" content="website" />
   <title>FARA CRM</title>
   <link rel="icon" href="./images/favicon.svg" type="image/svg+xml" />
   <!-- Yandex.Metrika counter -->
@@ -14,7 +18,6 @@
           for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
           k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
       })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=106794518', 'ym');
-
       ym(106794518, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
   </script>
   <noscript><div><img src="https://mc.yandex.ru/watch/106794518" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
@@ -238,29 +241,27 @@
           <pre class="acols__code"><code><span class="cmt"># backend/project_setup.py</span>
 
 <span class="kw">class</span> <span class="str">Apps</span>(AppsCore):
-    <span class="cmt"># CRM бизнес-модули</span>
-    leads       = LeadsApp()
-    partners    = PartnersApp()
-    sales       = SalesApp()
-    products    = ProductsApp()
-    company     = CompanyApp()
-    contract    = ContractApp()
-    task        = TasksApp()
-    activity    = ActivityApp()
-    report_docx = ReportDocxApp()
+    <span class="cmt"># CRM</span>
+    leads     = LeadsApp()
+    partners  = PartnersApp()
+    sales     = SalesApp()
+    products  = ProductsApp()
+    company   = CompanyApp()
+    contract  = ContractApp()
+    task      = TasksApp()
+    activity  = ActivityApp()
 
-    <span class="cmt"># Коммуникации</span>
-    chat          = ChatApp()
-    chat_telegram = ChatTelegramApp()
-    chat_email    = ChatEmailApp()
-    attachments   = AttachmentsApp()
+    <span class="cmt"># Chat</span>
+    chat      = ChatApp()
+    chat_tg   = ChatTelegramApp()
+    chat_mail = ChatEmailApp()
 
-    <span class="cmt"># Система</span>
+    <span class="cmt"># System</span>
     security  = SecurityApp()
     users     = UserApp()
     cron      = CronApp()
-    db        = DotormDatabasesPostgresService()
-    crud_auto = DotormCrudAutoService()</code></pre>
+    db        = DbPostgresService()
+    crud_auto = CrudAutoService()</code></pre>
         </div>
       </div>
     </section>

@@ -9,9 +9,7 @@ set -euo pipefail
 # ── Config ───────────────────────────────────────────────
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 COMPOSE_FILE="${SCRIPT_DIR}/docker-compose.yml"
-RESET_SCRIPT="/opt/faracrm/demo-reset.sh"
 CRON_LOG="/var/log/faracrm-demo-reset.log"
-CRON_SCHEDULE="0 * * * *"
 BACKEND_URL="http://localhost:8000/api/"
 HEALTH_TIMEOUT=120
 

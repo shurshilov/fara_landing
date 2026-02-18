@@ -8,7 +8,8 @@ set -euo pipefail
 
 # ── Config ───────────────────────────────────────────────
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-COMPOSE_FILE="${SCRIPT_DIR}/docker-compose.yml"
+FARACRM_DIR="/opt/faracrm"
+COMPOSE_FILE="${FARACRM_DIR}/docker-compose.yml"
 CRON_LOG="/var/log/faracrm-demo-reset.log"
 BACKEND_URL="http://localhost:8000/api/"
 HEALTH_TIMEOUT=120
@@ -64,7 +65,8 @@ do_reset_now() {
     confirm || { warn "Отменено."; return; }
 
     echo
-    info "Останавливаю контейнеры..."
+    cd "$FARACRM_DIR"
+    info "Останавливаю контейнеры (${FARACRM_DIR})..."
     docker compose -f "$COMPOSE_FILE" down --timeout 10 --volumes --remove-orphans
     log "Контейнеры остановлены"
 
@@ -299,7 +301,7 @@ do_logs() {
 if [[ "${1:-}" == "--reset" ]]; then
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] DEMO-RESET: Starting..."
 
-    cd "$SCRIPT_DIR"
+    cd "$FARACRM_DIR"
     docker compose -f "$COMPOSE_FILE" down --timeout 10 --volumes --remove-orphans
 
     # Force remove any stuck containers holding the volume

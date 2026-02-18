@@ -63,7 +63,7 @@ chmod +x init-ssl.sh
 ```bash
 cd /opt/fara_landing
 chmod +x demo_manager.sh
-sudo ./demo-manager.sh
+sudo ./demo_manager.sh
 
 ## Обновление CRM
 

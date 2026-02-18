@@ -65,15 +65,22 @@ do_reset_now() {
 
     echo
     info "Останавливаю контейнеры..."
-    docker compose -f "$COMPOSE_FILE" down --timeout 10
+    docker compose -f "$COMPOSE_FILE" down --timeout 10 --volumes --remove-orphans
     log "Контейнеры остановлены"
 
     info "Удаляю PostgreSQL volume..."
-    # Имя volume: {project}_{volume} — берём из compose
+    # Убиваем любые контейнеры которые могут держать volume
+    local stuck_containers
+    stuck_containers=$(docker ps -aq --filter "volume=pgdata" 2>/dev/null || true)
+    if [ -n "$stuck_containers" ]; then
+        warn "Контейнеры держат volume, останавливаю принудительно..."
+        echo "$stuck_containers" | xargs docker rm -f 2>/dev/null || true
+    fi
+
     local pg_volumes
     pg_volumes=$(docker volume ls -q | grep -E "pgdata" || true)
     if [ -n "$pg_volumes" ]; then
-        echo "$pg_volumes" | xargs docker volume rm -f
+        echo "$pg_volumes" | xargs docker volume rm -f 2>/dev/null || true
         log "Volumes удалены: $pg_volumes"
     else
         warn "PostgreSQL volumes не найдены (возможно уже удалены)"
@@ -293,10 +300,14 @@ if [[ "${1:-}" == "--reset" ]]; then
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] DEMO-RESET: Starting..."
 
     cd "$SCRIPT_DIR"
-    docker compose -f "$COMPOSE_FILE" down --timeout 10
+    docker compose -f "$COMPOSE_FILE" down --timeout 10 --volumes --remove-orphans
+
+    # Force remove any stuck containers holding the volume
+    stuck=$(docker ps -aq --filter "volume=pgdata" 2>/dev/null || true)
+    [ -n "$stuck" ] && echo "$stuck" | xargs docker rm -f 2>/dev/null || true
 
     pg_volumes=$(docker volume ls -q | grep -E "pgdata" || true)
-    [ -n "$pg_volumes" ] && echo "$pg_volumes" | xargs docker volume rm -f
+    [ -n "$pg_volumes" ] && echo "$pg_volumes" | xargs docker volume rm -f 2>/dev/null || true
 
     docker compose -f "$COMPOSE_FILE" up -d
 

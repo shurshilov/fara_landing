@@ -59,7 +59,64 @@ wait_backend() {
 do_reset_now() {
     echo
     echo -e "${BOLD}  Сброс демо-инстанса${NC}"
-    echo -e "  Будут выполнены:"
+    echo
+    echo -e "  Выберите способ:"
+    echo -e "    ${BOLD}1)${NC}  ${GREEN}Мягкий${NC} — сброс БД без остановки (даунтайм ~5с)"
+    echo -e "    ${BOLD}2)${NC}  ${YELLOW}Полный${NC} — удаление volume + перезапуск (даунтайм ~40с)"
+    echo
+    echo -en "  ${BOLD}Выбор [1-2]: ${NC}"
+    read -r reset_choice
+
+    case "$reset_choice" in
+        1) do_soft_reset ;;
+        2) do_hard_reset ;;
+        *) err "Неверный выбор" ;;
+    esac
+}
+
+do_soft_reset() {
+    echo
+    echo -e "  ${BOLD}Мягкий сброс:${NC}"
+    echo -e "    1. ${CYAN}DROP + CREATE DATABASE${NC} в работающем postgres"
+    echo -e "    2. ${CYAN}docker compose restart backend${NC} — backend выполнит post_init"
+    echo
+    confirm || { warn "Отменено."; return; }
+
+    cd "$FARACRM_DIR"
+
+    # Имя контейнера postgres
+    local pg_container
+    pg_container=$(docker compose -f "$COMPOSE_FILE" ps -q postgres 2>/dev/null)
+    if [ -z "$pg_container" ]; then
+        err "Контейнер postgres не найден. Используйте полный сброс."
+        return 1
+    fi
+
+    info "Сброс базы данных..."
+    # Закрываем все соединения и пересоздаём БД
+    docker exec "$pg_container" psql -U openpg -d postgres -c "
+        SELECT pg_terminate_backend(pid)
+        FROM pg_stat_activity
+        WHERE datname = 'fara' AND pid <> pg_backend_pid();
+    " > /dev/null 2>&1
+
+    docker exec "$pg_container" psql -U openpg -d postgres -c "DROP DATABASE IF EXISTS fara;" > /dev/null 2>&1
+    docker exec "$pg_container" psql -U openpg -d postgres -c "CREATE DATABASE fara OWNER openpg;" > /dev/null 2>&1
+    log "База пересоздана"
+
+    info "Перезапуск backend (post_init)..."
+    docker compose -f "$COMPOSE_FILE" restart backend
+    log "Backend перезапущен"
+
+    wait_backend
+
+    echo
+    log "Демо сброшен (мягкий). Даунтайм минимальный."
+}
+
+do_hard_reset() {
+    echo
+    echo -e "  ${BOLD}Полный сброс:${NC}"
     echo -e "    1. ${CYAN}docker compose down${NC} — остановка контейнеров"
     echo -e "    2. ${CYAN}docker volume rm pgdata${NC} — удаление БД"
     echo -e "    3. ${CYAN}docker compose up -d${NC} — запуск (post_init создаст данные)"
@@ -301,19 +358,39 @@ do_logs() {
 
 # ── Non-interactive mode ─────────────────────────────────
 if [[ "${1:-}" == "--reset" ]]; then
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] DEMO-RESET: Starting..."
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] DEMO-RESET: Starting (soft)..."
 
     cd "$FARACRM_DIR"
-    docker compose -f "$COMPOSE_FILE" down --timeout 10 --volumes --remove-orphans
 
-    # Force remove any stuck containers holding the volume
-    stuck=$(docker ps -aq --filter "volume=pgdata" 2>/dev/null || true)
-    [ -n "$stuck" ] && echo "$stuck" | xargs docker rm -f 2>/dev/null || true
+    # Soft reset: DROP/CREATE DB + restart backend
+    pg_container=$(docker compose -f "$COMPOSE_FILE" ps -q postgres 2>/dev/null)
 
-    pg_volumes=$(docker volume ls -q | grep -E "pgdata" || true)
-    [ -n "$pg_volumes" ] && echo "$pg_volumes" | xargs docker volume rm -f 2>/dev/null || true
+    if [ -n "$pg_container" ]; then
+        # Мягкий сброс — минимальный даунтайм
+        docker exec "$pg_container" psql -U openpg -d postgres -c "
+            SELECT pg_terminate_backend(pid)
+            FROM pg_stat_activity
+            WHERE datname = 'fara' AND pid <> pg_backend_pid();
+        " > /dev/null 2>&1
 
-    docker compose -f "$COMPOSE_FILE" up -d
+        docker exec "$pg_container" psql -U openpg -d postgres -c "DROP DATABASE IF EXISTS fara;" > /dev/null 2>&1
+        docker exec "$pg_container" psql -U openpg -d postgres -c "CREATE DATABASE fara OWNER openpg;" > /dev/null 2>&1
+
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] DEMO-RESET: DB recreated, restarting backend..."
+        docker compose -f "$COMPOSE_FILE" restart backend
+    else
+        # Fallback: полный сброс если postgres не запущен
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] DEMO-RESET: Postgres not running, doing hard reset..."
+        docker compose -f "$COMPOSE_FILE" down --timeout 10 --volumes --remove-orphans
+
+        stuck=$(docker ps -aq --filter "volume=pgdata" 2>/dev/null || true)
+        [ -n "$stuck" ] && echo "$stuck" | xargs docker rm -f 2>/dev/null || true
+
+        pg_volumes=$(docker volume ls -q | grep -E "pgdata" || true)
+        [ -n "$pg_volumes" ] && echo "$pg_volumes" | xargs docker volume rm -f 2>/dev/null || true
+
+        docker compose -f "$COMPOSE_FILE" up -d
+    fi
 
     elapsed=0
     while [ $elapsed -lt $HEALTH_TIMEOUT ]; do
@@ -342,9 +419,9 @@ show_menu() {
     echo
     echo -e "  ${BOLD}1)${NC}  🔄  Сбросить демо сейчас"
     echo -e "  ${BOLD}2)${NC}  📊  Статус"
-    echo -e "  ${BOLD}3)${NC}  ⏰  Настроить Cron (каждый час)"
+    echo -e "  ${BOLD}3)${NC}  ⏰  Настроить Cron"
     echo -e "  ${BOLD}4)${NC}  🗑   Удалить Cron"
-    echo -e "  ${BOLD}5)${NC}  ⚙️   Настроить Systemd Timer (каждый час)"
+    echo -e "  ${BOLD}5)${NC}  ⚙️   Настроить Systemd Timer"
     echo -e "  ${BOLD}6)${NC}  🗑   Удалить Systemd Timer"
     echo -e "  ${BOLD}7)${NC}  📋  Посмотреть логи"
     echo -e "  ${BOLD}0)${NC}  🚪  Выход"

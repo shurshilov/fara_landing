@@ -54,10 +54,16 @@ docker network ls | grep default
 #    faracrm.com, www.faracrm.com, demo.faracrm.com, docs.faracrm.com
 
 # 5. Получить SSL и запустить лендинг
-cd /opt/fara/landing
+```bash
+cd /opt/fara_landing
 chmod +x init-ssl.sh
 ./init-ssl.sh
-```
+
+# 6. Demo manager
+```bash
+cd /opt/fara_landing
+chmod +x demo_manager.sh
+sudo ./demo-manager.sh
 
 ## Обновление CRM
 

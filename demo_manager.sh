@@ -11,7 +11,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 FARACRM_DIR="/opt/faracrm"
 COMPOSE_FILE="${FARACRM_DIR}/docker-compose.yml"
 CRON_LOG="/var/log/faracrm-demo-reset.log"
-BACKEND_URL="http://localhost:8000/api/"
+BACKEND_URLS=("http://localhost:7777/api/" "http://localhost:8000/api/")
 HEALTH_TIMEOUT=120
 
 # ── Colors ───────────────────────────────────────────────
@@ -39,10 +39,12 @@ wait_backend() {
     info "Ожидание backend..."
     local elapsed=0
     while [ $elapsed -lt $HEALTH_TIMEOUT ]; do
-        if curl -sf "$BACKEND_URL" > /dev/null 2>&1; then
-            log "Backend готов! (${elapsed}s)"
-            return 0
-        fi
+        for url in "${BACKEND_URLS[@]}"; do
+            if curl -sf "$url" > /dev/null 2>&1; then
+                log "Backend готов! (${elapsed}s) — ${url}"
+                return 0
+            fi
+        done
         sleep 2
         elapsed=$((elapsed + 2))
         echo -ne "\r    ${elapsed}s / ${HEALTH_TIMEOUT}s..."
@@ -315,10 +317,12 @@ if [[ "${1:-}" == "--reset" ]]; then
 
     elapsed=0
     while [ $elapsed -lt $HEALTH_TIMEOUT ]; do
-        if curl -sf "$BACKEND_URL" > /dev/null 2>&1; then
-            echo "[$(date '+%Y-%m-%d %H:%M:%S')] DEMO-RESET: Backend ready (${elapsed}s)"
-            exit 0
-        fi
+        for url in "${BACKEND_URLS[@]}"; do
+            if curl -sf "$url" > /dev/null 2>&1; then
+                echo "[$(date '+%Y-%m-%d %H:%M:%S')] DEMO-RESET: Backend ready (${elapsed}s) — ${url}"
+                exit 0
+            fi
+        done
         sleep 2
         elapsed=$((elapsed + 2))
     done

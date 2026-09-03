@@ -1,0 +1,408 @@
+/* ===== Comparison pages (/vs/*) ===== */
+
+:root {
+  --vs-good: #2a9d6b;
+  --vs-bad: #d9534f;
+  --vs-warn: #d99a2b;
+}
+
+[data-theme="dark"] {
+  --vs-good: #3ecf8e;
+  --vs-bad: #ff6b6b;
+  --vs-warn: #f0a55a;
+}
+
+[data-theme="light"] {
+  --vs-good: #16794c;
+  --vs-bad: #b8342b;
+  --vs-warn: #9c6a12;
+}
+
+/* ===== HERO (compact version of .hero) ===== */
+.vs-hero {
+  position: relative;
+  padding: 120px clamp(20px, 5vw, 60px) 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.vs-hero__title {
+  font-size: clamp(30px, 6vw, 62px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -1px;
+  color: var(--tx);
+  margin-bottom: 18px;
+}
+
+.vs-hero__title b {
+  color: var(--logo);
+  text-shadow: 2px 2px 0 var(--ac);
+}
+
+.vs-hero__sub {
+  font-size: clamp(14px, 1.8vw, 18px);
+  color: var(--tx2);
+  line-height: 1.7;
+  max-width: 720px;
+  margin: 0 auto 28px;
+}
+
+.vs-crumbs {
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--tx3);
+  margin-bottom: 18px;
+}
+
+.vs-crumbs a:hover {
+  color: var(--logo);
+}
+
+/* ===== PAGE SWITCHER ===== */
+.vs-switch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 0 auto 8px;
+}
+
+.vs-switch__item {
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--tx3);
+  background: var(--bg-card);
+  border: 1px solid var(--bd);
+  transition: all 0.25s var(--ease);
+}
+
+.vs-switch__item:hover {
+  color: var(--tx);
+  border-color: var(--bd2);
+}
+
+.vs-switch__item.active {
+  background: var(--logo);
+  border-color: var(--logo);
+  color: #fff;
+}
+
+/* ===== SECTION LAYOUT ===== */
+.vs-sec {
+  padding: clamp(40px, 6vw, 80px) clamp(20px, 5vw, 60px);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.vs-sec__title {
+  font-size: clamp(22px, 3vw, 34px);
+  font-weight: 700;
+  color: var(--tx);
+  margin-bottom: 12px;
+}
+
+.vs-sec__desc {
+  font-size: 15px;
+  color: var(--tx2);
+  line-height: 1.7;
+  margin-bottom: 32px;
+  max-width: 760px;
+}
+
+/* ===== TWO-COLUMN CARDS ===== */
+.vs-grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.vs-card {
+  padding: 28px;
+  border-radius: 16px;
+  border: 1px solid var(--bd);
+  background: var(--bg-card);
+  transition: all 0.3s var(--ease);
+}
+
+.vs-card:hover {
+  border-color: var(--bd2);
+  background: var(--bg-card-h);
+}
+
+.vs-card__h {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--tx);
+  margin-bottom: 16px;
+}
+
+.vs-card__tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.vs-card--good {
+  border-color: rgba(42, 157, 107, 0.35);
+}
+
+.vs-card--good .vs-card__tag {
+  color: var(--vs-good);
+  border: 1px solid var(--vs-good);
+}
+
+.vs-card--bad {
+  border-color: rgba(217, 83, 79, 0.3);
+}
+
+.vs-card--bad .vs-card__tag {
+  color: var(--vs-bad);
+  border: 1px solid var(--vs-bad);
+}
+
+/* ===== MARKED LISTS ===== */
+.vs-list li {
+  position: relative;
+  padding-left: 26px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--tx2);
+}
+
+.vs-list li + li {
+  margin-top: 12px;
+}
+
+.vs-list li::before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-weight: 700;
+}
+
+.vs-list li b,
+.vs-list li strong {
+  color: var(--tx);
+  font-weight: 700;
+}
+
+.vs-list--plus li::before {
+  content: '+';
+  color: var(--vs-good);
+  font-size: 16px;
+}
+
+.vs-list--minus li::before {
+  content: '−';
+  color: var(--vs-bad);
+  font-size: 16px;
+}
+
+.vs-list--dot li::before {
+  content: '→';
+  color: var(--logo);
+}
+
+/* ===== COMPARISON TABLE ===== */
+.vs-tablewrap {
+  overflow-x: auto;
+  border-radius: 14px;
+  border: 1px solid var(--bd);
+  background: var(--bg-card);
+}
+
+.vs-table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.vs-table th,
+.vs-table td {
+  padding: 14px 18px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--bd);
+  line-height: 1.6;
+}
+
+.vs-table thead th {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--tx);
+  border-bottom: 2px solid var(--bd2);
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  background: var(--bg2, var(--bg));
+  z-index: 1;
+}
+
+.vs-table thead th:nth-child(2) {
+  color: var(--logo);
+}
+
+.vs-table tbody tr:last-child th,
+.vs-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.vs-table tbody tr:hover td,
+.vs-table tbody tr:hover th {
+  background: var(--bg-card-h);
+}
+
+.vs-table tbody th {
+  font-weight: 600;
+  color: var(--tx);
+  width: 26%;
+}
+
+.vs-table td {
+  color: var(--tx2);
+}
+
+.vs-table td:nth-child(2) {
+  width: 37%;
+}
+
+.vs-mark {
+  font-weight: 700;
+  margin-right: 6px;
+}
+
+.vs-mark--y { color: var(--vs-good); }
+.vs-mark--n { color: var(--vs-bad); }
+.vs-mark--p { color: var(--vs-warn); }
+
+/* ===== NOTE / DISCLAIMER ===== */
+.vs-note {
+  margin-top: 20px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  border: 1px dashed var(--bd2);
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--tx3);
+}
+
+.vs-note a {
+  color: var(--logo);
+  border-bottom: 1px solid transparent;
+}
+
+.vs-note a:hover {
+  border-bottom-color: var(--logo);
+}
+
+/* ===== CALLOUT ===== */
+.vs-callout {
+  padding: 24px 28px;
+  border-radius: 14px;
+  border: 1px solid var(--bd2);
+  border-left: 3px solid var(--logo);
+  background: var(--bg-card);
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--tx2);
+}
+
+.vs-callout b {
+  color: var(--tx);
+}
+
+/* ===== FAQ ===== */
+.vs-faq details {
+  border-radius: 12px;
+  border: 1px solid var(--bd);
+  background: var(--bg-card);
+  padding: 0 20px;
+  transition: border-color 0.25s var(--ease);
+}
+
+.vs-faq details + details {
+  margin-top: 12px;
+}
+
+.vs-faq details[open] {
+  border-color: var(--bd2);
+}
+
+.vs-faq summary {
+  padding: 18px 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--tx);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.vs-faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.vs-faq summary::after {
+  content: '+';
+  color: var(--logo);
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.vs-faq details[open] summary::after {
+  content: '−';
+}
+
+.vs-faq__a {
+  padding: 0 0 20px;
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--tx2);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 860px) {
+  .vs-grid2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .vs-hero {
+    padding-top: 100px;
+  }
+
+  .vs-card {
+    padding: 20px;
+  }
+
+  .vs-table th,
+  .vs-table td {
+    padding: 12px 14px;
+    font-size: 13px;
+  }
+
+  .vs-callout {
+    padding: 18px 20px;
+    font-size: 14px;
+  }
+}

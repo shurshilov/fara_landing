@@ -506,31 +506,113 @@
 }
 
 .fcard {
-  padding: 32px;
-  border-radius: 16px;
+  position: relative;
+  padding: 30px 26px;
+  border-radius: 18px;
   border: 1px solid var(--bd);
   background: var(--bg-card);
-  transition: all 0.35s var(--ease);
+  overflow: hidden;
+  text-align: left;
+  /* акцент карточки — переопределяется категорией ниже */
+  --fc: var(--logo);
+  --fc-glow: var(--logo-glow);
+  transition:
+    transform 0.4s var(--ease),
+    border-color 0.4s var(--ease),
+    box-shadow 0.4s var(--ease),
+    background 0.4s var(--ease);
+}
+
+/* Категории: CRM — фирменный бирюзовый, коммуникации — акцент темы, система — фиолетовый */
+.fcard[data-cat="comm"] {
+  --fc: var(--ac);
+  --fc-glow: var(--ac-glow);
+}
+
+[data-theme="dark"] .fcard[data-cat="sys"] {
+  --fc: #b07cff;
+  --fc-glow: rgba(176, 124, 255, .22);
+}
+
+[data-theme="light"] .fcard[data-cat="sys"] {
+  --fc: #6d3fc4;
+  --fc-glow: rgba(109, 63, 196, .14);
+}
+
+/* Мягкое свечение изнутри карточки */
+.fcard::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(420px circle at 50% -10%, var(--fc-glow), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.45s var(--ease);
+  pointer-events: none;
+}
+
+/* Градиентная линия, растущая по верхнему краю */
+.fcard::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, var(--fc), transparent);
+  transition: width 0.55s var(--ease);
+}
+
+.fcard > * {
+  position: relative;
+  z-index: 1;
 }
 
 .fcard:hover {
+  transform: translateY(-6px);
   background: var(--bg-card-h);
-  border-color: var(--bd2);
-  transform: translateY(-4px);
-  box-shadow: var(--sh);
+  border-color: var(--fc);
+  box-shadow: 0 22px 45px -22px var(--fc-glow), var(--sh);
+}
+
+.fcard:hover::before {
+  opacity: 1;
+}
+
+.fcard:hover::after {
+  width: 100%;
 }
 
 .fcard__icon {
-  width: 48px;
-  height: 48px;
+  width: 54px;
+  height: 54px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
-  background: var(--logo-glow);
-  color: var(--logo);
-  font-size: 22px;
+  border-radius: 16px;
+  background: linear-gradient(150deg, var(--fc-glow), transparent 75%), var(--bg-card-h);
+  border: 1px solid var(--bd);
+  color: var(--fc);
+  font-size: 24px;
+  line-height: 1;
   margin-bottom: 20px;
+  transition:
+    transform 0.5s var(--spring),
+    border-color 0.4s var(--ease),
+    box-shadow 0.4s var(--ease);
+}
+
+.fcard:hover .fcard__icon {
+  transform: translateY(-3px) scale(1.06) rotate(-4deg);
+  border-color: var(--fc);
+  box-shadow: 0 10px 24px -12px var(--fc-glow);
+}
+
+/* Текстовая «иконка»-бейдж для брендов без эмодзи */
+.fcard__icon--txt {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
 }
 
 .fcard__title {
@@ -538,12 +620,48 @@
   font-weight: 700;
   color: var(--tx);
   margin-bottom: 10px;
+  transition: color 0.3s var(--ease);
+}
+
+.fcard:hover .fcard__title {
+  color: var(--fc);
 }
 
 .fcard__text {
   font-size: 14px;
   color: var(--tx2);
   line-height: 1.7;
+}
+
+/* Карточки проявляются волной, когда секция попадает в кадр */
+@keyframes fcardIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.reveal.visible .fgrid .fcard {
+  animation: fcardIn 0.55s var(--ease) backwards;
+}
+
+.fgrid .fcard:nth-child(4n + 2) { animation-delay: 0.07s; }
+.fgrid .fcard:nth-child(4n + 3) { animation-delay: 0.14s; }
+.fgrid .fcard:nth-child(4n + 4) { animation-delay: 0.21s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal.visible .fgrid .fcard {
+    animation: none;
+  }
+
+  .fcard:hover,
+  .fcard:hover .fcard__icon {
+    transform: none;
+  }
 }
 
 /* ===== STATS ===== */
